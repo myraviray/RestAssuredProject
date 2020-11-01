@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="CukeRunner" project="RestAssured-BDD-Java-master" tests="3" started="0" failures="0" errors="0" ignored="0">
+  <testsuite name="runnerClasses.CukeRunner" incomplete="true">
+    <testsuite name="Feature: To verify API automation with Rest Assured" incomplete="true">
+      <testsuite name="Scenario: To verify Rest service - GET Method" incomplete="true">
+        <testcase name="Given To initiate Rest service to get country details with code as &quot;IN&quot;" classname="Scenario: To verify Rest service - GET Method" incomplete="true"/>
+        <testcase name="Then Respose status code should be &quot;200&quot;" classname="Scenario: To verify Rest service - GET Method" incomplete="true"/>
+        <testcase name="And response should includes the following" classname="Scenario: To verify Rest service - GET Method" incomplete="true"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testrun>

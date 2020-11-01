@@ -1,0 +1,80 @@
+package glueCode;
+
+
+import com.jayway.restassured.RestAssured;
+import com.jayway.restassured.path.json.JsonPath;
+import com.jayway.restassured.response.Response;
+import com.jayway.restassured.specification.RequestSpecification;
+
+import static org.hamcrest.Matchers.equalTo;
+
+import cucumber.api.DataTable;
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import static org.junit.Assert.assertEquals;
+
+import utilities.Utils;
+import java.util.List;
+
+public class StepDef extends Utils {
+
+
+    private Response response;
+
+
+    @Given("^To initiate Rest service to get country details with code as \"([^\"]*)\"$")
+    public void to_initiate_Rest_service_to_get_country_details_with_code_as(String arg1) throws Throwable {
+
+    	 RestAssured.baseURI = "https://reqres.in";
+    	 
+    	 // Get the RequestSpecification of the request that you want to sent
+    	 // to the server. The server is specified by the BaseURI that we have
+    	 // specified in the above step.
+    	 RequestSpecification httpRequest = RestAssured.given();
+    	 
+    	 // Make a GET request call directly by using RequestSpecification.get() method.
+    	 // Make sure you specify the resource name.
+    	 response = httpRequest.get("/api/users?page=2");
+    	 System.out.println("Response Body is =>  " + response.asString());
+    	
+    	//        // Set Request parameters
+//
+//        // Set Base URI
+//        setBaseURI();
+//
+//        // Set Base path as country ISO code
+//        //		setBasePath(arg1);
+//        Utils.path = arg1;
+//
+//        //Get response
+//        response = getResponse();
+//        System.out.println("************The Response value as --" + response.prettyPrint());
+    }
+
+
+    @Then("^Respose status code should be \"([^\"]*)\"$")
+    public void respose_status_code_should_be(Integer arg1) throws Throwable {
+        // To verify the response status code
+        assertEquals("Status Check Failed!", 200, response.getStatusCode());
+
+    }
+
+    @Then("^response should includes the following$")
+    public void response_includes_the_following(DataTable arg1) throws Throwable {
+    	
+    	List < List < String >> data = arg1.raw();
+        // This method to verify response body
+    	 JsonPath jsonPathEvaluator = response.jsonPath();
+    	 System.out.println("email recieved for id 1" + jsonPathEvaluator.get("data..[?(@.id == "+data.get(1).get(0)+")].email"));
+    	 
+        
+        System.out.println("*************** Actua Data Table - data value as-- " + data);
+
+        response.then().body("RestResponse.result.name", equalTo(data.get(1).get(0)));
+        response.then().body("RestResponse.result.alpha2_code", equalTo(data.get(1).get(1)));
+        response.then().body("RestResponse.result.alpha3_code", equalTo(data.get(1).get(2)));
+
+
+    }
+
+}
